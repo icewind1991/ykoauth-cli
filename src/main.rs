@@ -47,11 +47,21 @@ fn main() -> anyhow::Result<()> {
         }
     };
 
-    if let Err(_) = cli_clipboard::set_contents(code.to_string()) {
-        println!("{}", code);
-    } else {
+    if try_copy(code.to_string()) {
         println!("{} - Copied", code);
+    } else {
+        println!("{}", code);
     }
 
     Ok(())
+}
+
+#[cfg(feature = "clipboard")]
+fn try_copy(code: String) -> bool {
+    cli_clipboard::set_contents(code).is_ok()
+}
+
+#[cfg(not(feature = "clipboard"))]
+fn try_copy(_code: String) -> bool {
+    false
 }
