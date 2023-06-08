@@ -1,7 +1,7 @@
 {
   inputs = {
     utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "nixpkgs/release-22.11";
+    nixpkgs.url = "nixpkgs/release-23.05";
   };
 
   outputs = {
@@ -13,12 +13,12 @@
         inherit system;
       };
     in rec {
-     # `nix build`
-     packages.ykoauth-cli = pkgs.callPackage ./package.nix {};
-     defaultPackage = packages.ykoauth-cli;
+      packages = rec {
+        ykoauth-cli = pkgs.callPackage ./package.nix {};
+        default = ykoauth-cli;
+      };
 
-      # `nix develop`
-      devShell = pkgs.mkShell {
+      devShells.default = pkgs.mkShell {
         nativeBuildInputs = with pkgs; [rustc cargo bacon cargo-edit cargo-outdated clippy gcc pkg-config pcsclite xorg.libX11.dev];
       };
     }) // {

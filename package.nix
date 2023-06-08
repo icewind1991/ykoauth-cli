@@ -14,7 +14,12 @@ in rustPlatform.buildRustPackage rec {
 
   src = ./.;
 
-  cargoSha256 = "sha256-fC1PqSm+rjB5zdEKAatlLdEr4SPRn/Txz15kXzs7FLo=";
+  cargoLock = {
+    lockFile = ./Cargo.lock;
+    outputHashes = {
+      "ykoath-0.1.0" = "sha256-wBiEoaRNPG3jkY8HHPC4VwNC6/HrPSU1K4AcILLytrA=";
+    };
+  };
 
   nativeBuildInputs = [gcc pkg-config] ++ optionals enableClipboard [xorg.libX11.dev];
   buildInputs = [pcsclite] ++ optionals enableClipboard [xorg.libX11];
